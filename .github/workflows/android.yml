@@ -13,6 +13,7 @@ jobs:
 
     env:
       OPEN_WEATHER_API_KEY: ${{ secrets.OPEN_WEATHER_API_KEY }}
+      CHAT_GPT_API_KEY: ${{ secrets.CHAT_GPT_API_KEY }}
 
     steps:
     - uses: actions/checkout@v4

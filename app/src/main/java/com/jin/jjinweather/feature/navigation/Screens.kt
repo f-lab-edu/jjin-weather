@@ -1,6 +1,9 @@
 package com.jin.jjinweather.feature.navigation
 
-enum class Screens(val route:String) {
-    ONBOARDING("onboardingScreen"),
-    TEMPERATURE("temperatureScreen"),
+sealed class Screens(val route: String) {
+    object Onboarding : Screens("onboardingScreen")
+    object Temperature : Screens("temperatureScreen")
+    object Outfit : Screens("outfitScreen/{temperature}") {
+        fun createRoute(temperature: Int): String = "outfitScreen/$temperature"
+    }
 }
