@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.jin.jjinweather.R
+import com.jin.jjinweather.feature.weather.domain.model.MoonPhaseType
 import com.jin.jjinweather.ui.theme.DetailWeatherIconBackgroundColor
 import java.time.Duration
 import java.time.LocalTime
@@ -52,7 +53,7 @@ fun DetailWeather(
     backgroundColor: Color,
     sunrise: LocalTime,
     sunset: LocalTime,
-    moonPhase: Double
+    moonPhase: MoonPhaseType
 ) {
     Box(
         modifier = modifier
@@ -252,7 +253,7 @@ private fun formatUntilSunsetLabel(now: LocalTime, sunset: LocalTime): String {
 }
 
 @Composable
-private fun MoreWeather(moonPhase: Double) {
+private fun MoreWeather(moonPhase: MoonPhaseType) {
     Row(
         modifier = Modifier
             .padding(bottom = 10.dp)
@@ -293,14 +294,18 @@ private fun MoreWeather(moonPhase: Double) {
             .padding(horizontal = 20.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        val (moonIcon, moonLabel) = mapMoonPhaseToMoonIconAndLabel(moonPhase)
         Box(
             modifier = Modifier
                 .background(DetailWeatherIconBackgroundColor, CircleShape)
                 .size(30.dp),
             contentAlignment = Alignment.Center
         ) {
-            Text(moonIcon)
+            Icon(
+                modifier = Modifier.size(20.dp),
+                painter = painterResource(moonPhase.iconDrawableRes),
+                contentDescription = stringResource(R.string.success_detail_weather_weather_icon_desc),
+                tint = Color.Unspecified
+            )
         }
         Text(
             modifier = Modifier.padding(start = 8.dp),
@@ -310,23 +315,10 @@ private fun MoreWeather(moonPhase: Double) {
         )
         Spacer(Modifier.weight(1f))
         Text(
-            text = moonLabel,
+            text = stringResource(moonPhase.nameStringRes),
             color = Color.White,
             fontSize = 14.sp,
             fontWeight = FontWeight.Bold
         )
     }
-}
-
-// FIXME : [WeatherIcon] class 처럼 처리 필요.
-private fun mapMoonPhaseToMoonIconAndLabel(value: Double): Pair<String, String> = when {
-    value <= 0.03 || value == 1.0 -> Pair("🌑", "새로운 달")
-    value in 0.04..0.24 -> Pair("🌒", "초승달")
-    value == 0.25 -> Pair("🌓", "반달")
-    value in 0.26..0.49 -> Pair("🌔", "보름달 전")
-    value == 0.5 -> Pair("🌕", "보름달")
-    value in 0.51..0.74 -> Pair("🌖", "보름달 후")
-    value == 0.75 -> Pair("🌗", "반달")
-    value in 0.76..0.99 -> Pair("🌘", "초승달")
-    else -> Pair("🌑", "알 수 없음")
 }

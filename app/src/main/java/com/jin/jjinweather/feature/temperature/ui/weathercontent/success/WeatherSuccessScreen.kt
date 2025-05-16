@@ -23,7 +23,7 @@ import java.time.LocalTime
 @Composable
 fun WeatherSuccessScreen(weather: CityWeather) {
     val now = LocalTime.now()
-    val isNight = now.isBefore(weather.weather.dayWeather.sunrise) || now.isAfter(weather.weather.dayWeather.sunset)
+    val isNight = now.isBefore(weather.weather.dayWeather.sunCycle.sunrise) || now.isAfter(weather.weather.dayWeather.sunCycle.sunset)
     val backgroundGradientBrush = generateBackgroundColor(isNight)
     val cardBackgroundColor = generatedCardBackgroundColor(isNight)
 
@@ -71,8 +71,8 @@ fun WeatherSuccessScreen(weather: CityWeather) {
                 DetailWeather(
                     modifier = Modifier.padding(bottom = 20.dp),
                     backgroundColor = cardBackgroundColor,
-                    sunrise = weather.weather.dayWeather.sunrise,
-                    sunset = weather.weather.dayWeather.sunset,
+                    sunrise = weather.weather.dayWeather.sunCycle.sunrise,
+                    sunset = weather.weather.dayWeather.sunCycle.sunset,
                     moonPhase = weather.weather.dayWeather.moonPhase
                 )
             }

@@ -77,4 +77,11 @@
     <string name="success_detail_weather_weather_icon_desc">상세 날씨 정보 아이콘</string>
     <string name="success_detail_weather_weather">날씨</string>
     <string name="success_detail_weather_moon">달 모양</string>
+
+    <string name="moon_phase_new_moon">새로운 달</string>
+    <string name="moon_phase_crescent_moon">초승달</string>
+    <string name="moon_phase_half_moon">반달</string>
+    <string name="moon_phase_before_full_moon">보름달 전</string>
+    <string name="moon_phase_full_moon">보름달</string>
+    <string name="moon_phase_after_full_moon">보름달 후</string>
 </resources>

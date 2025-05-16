@@ -1,7 +1,7 @@
 package com.jin.jjinweather.feature.weather.data
 
 import com.jin.jjinweather.feature.weather.data.model.dto.WeatherDTO
-import com.jin.jjinweather.feature.weather.data.model.dto.HistoricalWeatherDTO
+import com.jin.jjinweather.feature.weather.data.model.dto.HistoricalWeatherDto
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -34,7 +34,7 @@ interface OpenWeatherApi {
      * @param units 온도 단위 (예: "metric" 섭씨 , "imperial" 화씨)
      * @param lang 응답 언어 (예: "kr", "en")
      * @param apiKey OpenWeatherMap API 키
-     * @return 이전 날씨 정보가 담긴 [HistoricalWeatherDTO]
+     * @return 이전 날씨 정보가 담긴 [HistoricalWeatherDto]
      */
     @GET("onecall/timemachine")
     suspend fun queryHistoricalWeather(
@@ -44,5 +44,5 @@ interface OpenWeatherApi {
         @Query("units") units: String,
         @Query("lang") lang: String,
         @Query("appid") apiKey: String
-    ): HistoricalWeatherDTO
+    ): HistoricalWeatherDto
 }

@@ -1,6 +1,7 @@
 package com.jin.jjinweather.feature.weather.domain.model
 
 import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import com.jin.jjinweather.R
 import java.time.Instant
 import java.time.LocalTime
@@ -16,10 +17,16 @@ data class DayWeather(
     val date: Calendar,
     val icon: WeatherIcon,
     val temperature: Number,
-    val sunrise: LocalTime,
-    val sunset: LocalTime,
-    val moonPhase: Double,
+    val description: String,
+    val sunCycle: SunCycle,
+    val feelsLikeTemperature: Number,
+    val moonPhase: MoonPhaseType,
     val temperatureRange: TemperatureRange
+)
+
+data class SunCycle(
+    val sunrise: LocalTime,
+    val sunset: LocalTime
 )
 
 data class TemperatureSnapshot(
@@ -38,12 +45,20 @@ typealias HourlyForecast = List<TemperatureSnapshot>
 data class DailyForecast(
     val date: Calendar,
     val icon: WeatherIcon,
-    val temperatureRange: TemperatureRange
+    val temperatureRange: TemperatureRange,
+    val sunCycle: SunCycle,
+    val feelsLikeTemperatureRange: FeelsLikeTemperatureRange,
+    val summary: String
 )
 
 data class TemperatureRange(
     val min: Number,
     val max: Number
+)
+
+data class FeelsLikeTemperatureRange(
+    val dayTemperature: Number,
+    val nightTemperature: Number
 )
 
 enum class WeatherIcon(@DrawableRes val drawableRes: Int) {
@@ -74,6 +89,37 @@ enum class WeatherIcon(@DrawableRes val drawableRes: Int) {
                 "13d", "13n" -> SNOW
                 "50d", "50n" -> MIST
                 else -> CLEAR_SKY_DAY
+            }
+        }
+    }
+}
+
+enum class MoonPhaseType(
+    @DrawableRes val iconDrawableRes: Int,
+    @StringRes val nameStringRes: Int
+) {
+    NEW_MOON(R.drawable.ic_mew_moon, R.string.moon_phase_new_moon),
+    START_CRESCENT_MOON(R.drawable.ic_start_crescent_moon, R.string.moon_phase_crescent_moon),
+    START_HALF_MOON(R.drawable.ic_start_half_moon, R.string.moon_phase_half_moon),
+    BEFORE_FULL_MOON(R.drawable.ic_before_full_moon, R.string.moon_phase_before_full_moon),
+    FULL_MOON(R.drawable.ic_full_moon, R.string.moon_phase_full_moon),
+    AFTER_FULL_MOON(R.drawable.ic_after_full_moon, R.string.moon_phase_after_full_moon),
+    END_HALF_MOON(R.drawable.ic_end_half_moon, R.string.moon_phase_half_moon),
+    END_CRESCENT_MOON(R.drawable.ic_end_crescent_moon, R.string.moon_phase_crescent_moon);
+
+    companion object {
+        fun findByMoonPhase(phase: Double): MoonPhaseType {
+            val phaseInt = (phase * 100).toInt()
+            return when (phaseInt) {
+                in 0..3, 100 -> NEW_MOON
+                in 4..24 -> START_CRESCENT_MOON
+                25 -> START_HALF_MOON
+                in 26..49 -> BEFORE_FULL_MOON
+                50 -> FULL_MOON
+                in 51..74 -> AFTER_FULL_MOON
+                75 -> END_HALF_MOON
+                in 76..99 -> END_CRESCENT_MOON
+                else -> NEW_MOON
             }
         }
     }

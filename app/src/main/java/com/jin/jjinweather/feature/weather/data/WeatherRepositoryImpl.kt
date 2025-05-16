@@ -4,6 +4,7 @@ import android.database.SQLException
 import com.jin.jjinweather.feature.weather.data.model.WeatherEntity
 import com.jin.jjinweather.feature.weather.domain.model.DayWeather
 import com.jin.jjinweather.feature.weather.domain.model.Forecast
+import com.jin.jjinweather.feature.weather.domain.model.SunCycle
 import com.jin.jjinweather.feature.weather.domain.model.TemperatureRange
 import com.jin.jjinweather.feature.weather.domain.model.TemperatureSnapshot
 import com.jin.jjinweather.feature.weather.domain.model.Weather
@@ -57,13 +58,15 @@ class WeatherRepositoryImpl(
         return WeatherEntity(
             iconCode = dayWeather.icon.name,
             currentTemperature = dayWeather.temperature.toDouble(),
+            temperatureDescription = dayWeather.description,
             yesterdayTemperature = yesterdayWeather.temperature.toDouble(),
             minTemperature = dayWeather.temperatureRange.min.toDouble(),
             maxTemperature = dayWeather.temperatureRange.max.toDouble(),
             hourlyWeatherList = forecast.hourly,
             dailyWeatherList = forecast.daily,
-            sunrise = dayWeather.sunrise.toSecondOfDay().toLong(),
-            sunset = dayWeather.sunset.toSecondOfDay().toLong(),
+            sunrise = dayWeather.sunCycle.sunrise.toSecondOfDay().toLong(),
+            sunset = dayWeather.sunCycle.sunset.toSecondOfDay().toLong(),
+            feelsLikeTemperature = dayWeather.feelsLikeTemperature.toDouble(),
             moonPhase = dayWeather.moonPhase
         )
     }
@@ -77,8 +80,9 @@ class WeatherRepositoryImpl(
                 date = Calendar.getInstance(),
                 icon = WeatherIcon.valueOf(iconCode),
                 temperature = currentTemperature,
-                sunrise = LocalTime.ofSecondOfDay(sunrise),
-                sunset = LocalTime.ofSecondOfDay(sunset),
+                description = temperatureDescription,
+                sunCycle = SunCycle(LocalTime.ofSecondOfDay(sunrise), LocalTime.ofSecondOfDay(sunset)),
+                feelsLikeTemperature = feelsLikeTemperature,
                 moonPhase = moonPhase,
                 temperatureRange = TemperatureRange(min = minTemperature, max = maxTemperature)
             ),

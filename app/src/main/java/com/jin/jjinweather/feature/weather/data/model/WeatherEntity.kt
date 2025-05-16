@@ -6,6 +6,7 @@ import com.jin.jjinweather.feature.weather.domain.model.DailyForecast
 import com.jin.jjinweather.feature.weather.domain.model.DailyWeather
 import com.jin.jjinweather.feature.weather.domain.model.HourlyForecast
 import com.jin.jjinweather.feature.weather.domain.model.HourlyWeather
+import com.jin.jjinweather.feature.weather.domain.model.MoonPhaseType
 
 /**
  * 위치 기반 날씨 정보
@@ -31,6 +32,7 @@ data class WeatherEntity(
     val id: Int = 0,
     val iconCode: String,
     val currentTemperature: Double,
+    val temperatureDescription: String,
     val yesterdayTemperature: Double,
     val minTemperature: Double,
     val maxTemperature: Double,
@@ -38,5 +40,6 @@ data class WeatherEntity(
     val dailyWeatherList: List<DailyForecast>,
     val sunrise: Long,
     val sunset: Long,
-    val moonPhase: Double
+    val feelsLikeTemperature: Double,
+    val moonPhase: MoonPhaseType
 )
