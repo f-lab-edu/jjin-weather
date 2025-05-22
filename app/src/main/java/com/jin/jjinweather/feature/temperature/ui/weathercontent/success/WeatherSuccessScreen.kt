@@ -12,6 +12,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.jin.jjinweather.feature.weather.domain.model.CityWeather
+import com.jin.jjinweather.feature.weather.domain.model.HourlyForecast
 import com.jin.jjinweather.ui.theme.SuccessBackgroundBottomDayColor
 import com.jin.jjinweather.ui.theme.SuccessBackgroundBottomNightColor
 import com.jin.jjinweather.ui.theme.SuccessBackgroundTopDayColor
@@ -21,9 +22,19 @@ import com.jin.jjinweather.ui.theme.SuccessCardBackgroundNightColor
 import java.time.LocalTime
 
 @Composable
-fun WeatherSuccessScreen(weather: CityWeather, onNavigateToOutfit: (Int) -> Unit) {
+fun WeatherSuccessScreen(
+    weather: CityWeather,
+    onNavigateToOutfit: (
+        temperature: Int,
+        cityName: String,
+        summary: String,
+        forecast: HourlyForecast,
+        feelsLikeTemperature: Int,
+    ) -> Unit
+) {
     val now = LocalTime.now()
-    val isNight = now.isBefore(weather.weather.dayWeather.sunCycle.sunrise) || now.isAfter(weather.weather.dayWeather.sunCycle.sunset)
+    val isNight =
+        now.isBefore(weather.weather.dayWeather.sunCycle.sunrise) || now.isAfter(weather.weather.dayWeather.sunCycle.sunset)
     val backgroundGradientBrush = generateBackgroundColor(isNight)
     val cardBackgroundColor = generatedCardBackgroundColor(isNight)
 
@@ -51,7 +62,15 @@ fun WeatherSuccessScreen(weather: CityWeather, onNavigateToOutfit: (Int) -> Unit
                 YesterdayWeatherOutfit(
                     backgroundColor = cardBackgroundColor,
                     yesterdayTemperature = weather.weather.yesterdayWeather.temperature.toInt(),
-                    onNavigateToOutfit = { onNavigateToOutfit(weather.weather.dayWeather.temperature.toInt()) }
+                    onNavigateToOutfit = {
+                        onNavigateToOutfit(
+                            weather.weather.dayWeather.temperature.toInt(),
+                            weather.cityName,
+                            weather.weather.forecast.daily.firstOrNull()?.summary.orEmpty(),
+                            weather.weather.forecast.hourly,
+                            weather.weather.dayWeather.feelsLikeTemperature.toInt()
+                        )
+                    }
                 )
             }
             item {
