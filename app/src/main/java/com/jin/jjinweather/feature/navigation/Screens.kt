@@ -7,5 +7,5 @@ sealed class Screens(val route: String) {
         fun createRoute(temperature: Int): String = "outfitScreen/$temperature"
     }
 
-    object NewArea : Screens("newArea")
+    object LocationSearch: Screens("locationSearch")
 }
