@@ -44,6 +44,8 @@
     <string name="success_temperature">%1$d°</string>
     <string name="success_current_min_temperature">최저: %1$d°</string>
     <string name="success_current_max_temperature">최고: %1$d°</string>
+    <string name="success_current_location">현재 위치</string>
+    <string name="success_current_location_icon_desc">현재 위치 아이콘</string>
     <string name="success_compared_high">어제보다 %1$d° 높아요</string>
     <string name="success_compared_low">어제보다 %1$d° 낮아요</string>
     <string name="success_compared_same">어제와 동일해요</string>
@@ -95,4 +97,10 @@
     <string name="outfit_error_img_desc">추천 옷 에러 이미지</string>
     <string name="outfit_error">현재 온도에 맞는 옷을 찾지 못했습니다.</string>
     <string name="outfit_error_button_retry">재요청</string>
+    
+    <string name="search_back_icon_desc">뒤로 가기 아이콘</string>
+    <string name="search_location">위치</string>
+    <string name="search_added_location">추가한 위치</string>
+    <string name="search_icon_desc">검색 아이콘</string>
+    <string name="search_text_field_hint">위치 검색 및 추가</string>
 </resources>

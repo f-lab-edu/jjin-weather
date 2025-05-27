@@ -35,6 +35,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -60,12 +61,12 @@ fun LocationSearchScreen(onNavigateToTemperature: () -> Unit) {
                 IconButton(onNavigateToTemperature) {
                     Icon(
                         imageVector = Icons.Outlined.ArrowBackIosNew,
-                        contentDescription = "",
+                        contentDescription = stringResource(R.string.search_back_icon_desc),
                         tint = Color.Black
                     )
                 }
                 Text(
-                    text = "위치",
+                    text = stringResource(R.string.search_location),
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center,
                     fontSize = 20.sp
@@ -133,14 +134,14 @@ fun LocationSearchBottomSheet() {
                 ) {
                     Icon(
                         imageVector = Icons.Filled.NearMe,
-                        contentDescription = "현재위치",
+                        contentDescription = stringResource(R.string.success_current_location_icon_desc),
                         tint = Color.White.copy(alpha = 0.7f),
                         modifier = Modifier.size(18.dp)
                     )
                 }
                 Column(modifier = Modifier.padding(start = 4.dp)) {
                     Text(
-                       text =  "현재 위치",
+                       text = stringResource(R.string.success_current_location),
                         color = Color.White,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
@@ -151,7 +152,7 @@ fun LocationSearchBottomSheet() {
                 Spacer(Modifier.weight(1f))
                 Image(
                     painter = painterResource(R.drawable.ic_main_clear_sky_day),
-                    contentDescription = "",
+                    contentDescription = stringResource(R.string.success_current_temperature_icon_desc),
                     modifier = Modifier.size(24.dp)
                 )
                 Text(
@@ -162,7 +163,7 @@ fun LocationSearchBottomSheet() {
                 )
             }
             Text(
-                text = "추가한 위치",
+                text = stringResource(R.string.search_added_location),
                 modifier = Modifier
                     .padding(horizontal = 10.dp)
                     .padding(top = 20.dp)
@@ -191,7 +192,7 @@ fun LocationSearchBottomSheet() {
                 Spacer(Modifier.weight(1f))
                 Image(
                     painter = painterResource(R.drawable.ic_main_clear_sky_day),
-                    contentDescription = "",
+                    contentDescription = stringResource(R.string.success_current_temperature_icon_desc),
                     modifier = Modifier.size(24.dp)
                 )
                 Text(
@@ -220,7 +221,7 @@ fun SearchLocationBox(
     ) {
         Icon(
             imageVector = Icons.Default.Search,
-            contentDescription = "검색 아이콘",
+            contentDescription = stringResource(R.string.search_icon_desc),
             tint = Color.Gray,
             modifier = Modifier.padding(end = 8.dp)
         )
@@ -234,7 +235,7 @@ fun SearchLocationBox(
             decorationBox = { innerTextField ->
                 if (query.isEmpty()) {
                     Text(
-                        text = "위치 검색 및 추가",
+                        text = stringResource(R.string.search_text_field_hint),
                         color = Color.Gray,
                         fontSize = 16.sp
                     )
