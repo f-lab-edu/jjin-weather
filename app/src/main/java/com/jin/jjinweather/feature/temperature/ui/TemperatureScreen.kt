@@ -22,7 +22,11 @@ import com.jin.jjinweather.feature.weather.ui.state.UiState
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun TemperatureScreen(viewModel: TemperatureViewModel, onNavigateToOutfit: (Int) -> Unit) {
+fun TemperatureScreen(
+    viewModel: TemperatureViewModel,
+    onNavigateToOutfit: (Int) -> Unit,
+    onNewLocationPage: () -> Unit
+) {
     val composePermissionState = rememberPermissionState(
         permission = Manifest.permission.ACCESS_COARSE_LOCATION
     )
@@ -34,21 +38,22 @@ fun TemperatureScreen(viewModel: TemperatureViewModel, onNavigateToOutfit: (Int)
         }
     }
     // FIXME : 불필요한 함수 분리로 판단되어 OutfitScreen UI 수정 시 수정 예정
-    WeatherContentUI(weather, onNavigateToOutfit)
+    WeatherContentUI(weather, onNavigateToOutfit, onNewLocationPage)
 }
 
 @Composable
 private fun WeatherContentUI(
     weather: UiState<CityWeather>,
-    onNavigateToOutfit: (Int) -> Unit
+    onNavigateToOutfit: (Int) -> Unit,
+    onNewLocationPage: () -> Unit
 ) {
     when (weather) {
         is UiState.Loading -> WeatherLoadingScreen()
         is UiState.Success -> {
             // FIXME : Weather page 마다 weather 정보 필요
             val weatherPages = listOf<@Composable () -> Unit>(
-                { WeatherSuccessScreen(weather.data, onNavigateToOutfit) },
-                { WeatherSuccessScreen(weather.data, onNavigateToOutfit) },
+                { WeatherSuccessScreen(weather.data, onNavigateToOutfit, onNewLocationPage) },
+                { WeatherSuccessScreen(weather.data, onNavigateToOutfit, onNewLocationPage) },
             )
             val pagerState = rememberPagerState { weatherPages.size }
             Box(modifier = Modifier.fillMaxSize()) {

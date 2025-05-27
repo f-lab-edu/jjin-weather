@@ -6,4 +6,6 @@ sealed class Screens(val route: String) {
     object Outfit : Screens("outfitScreen/{temperature}") {
         fun createRoute(temperature: Int): String = "outfitScreen/$temperature"
     }
+
+    object NewArea : Screens("newArea")
 }

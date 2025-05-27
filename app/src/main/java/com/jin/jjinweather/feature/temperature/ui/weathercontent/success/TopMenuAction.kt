@@ -15,7 +15,7 @@ import androidx.compose.ui.res.stringResource
 import com.jin.jjinweather.R
 
 @Composable
-fun TopMenuAction() {
+fun TopMenuAction(onNewLocationPage: () -> Unit) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
@@ -27,7 +27,7 @@ fun TopMenuAction() {
                 tint = Color.White
             )
         }
-        IconButton({}) {
+        IconButton(onNewLocationPage) {
             Icon(
                 imageVector = Icons.Outlined.Add,
                 contentDescription = stringResource(R.string.success_add_location_icon_secs),

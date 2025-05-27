@@ -27,6 +27,7 @@ import com.jin.jjinweather.feature.weather.domain.usecase.GetCurrentLocationWeat
 import com.jin.jjinweather.feature.navigation.Screens
 import com.jin.jjinweather.feature.network.OpenAiApiClient
 import com.jin.jjinweather.feature.network.OpenWeatherApiClient
+import com.jin.jjinweather.feature.newarea.ui.NewAreaScreen
 import com.jin.jjinweather.feature.onboarding.ui.OnboardingScreen
 import com.jin.jjinweather.feature.onboarding.ui.OnboardingViewModel
 import com.jin.jjinweather.feature.outfit.data.OutfitRepositoryImpl
@@ -123,6 +124,9 @@ fun AppNavigator(
                 viewModel = temperatureViewModel,
                 onNavigateToOutfit = { temperature ->
                     navController.navigate(Screens.Outfit.createRoute(temperature))
+                },
+                onNewLocationPage = {
+                    navController.navigate(Screens.NewArea.route)
                 }
             )
         }
@@ -132,6 +136,11 @@ fun AppNavigator(
         ) { backStackEntry ->
             val temperature = backStackEntry.arguments?.getInt("temperature") ?: 0
             OutfitScreen(viewModel = outfitViewModel, temperature = temperature)
+        }
+        composable(Screens.NewArea.route) {
+            NewAreaScreen() {
+                navController.navigate(Screens.Temperature.route)
+            }
         }
     }
 }
