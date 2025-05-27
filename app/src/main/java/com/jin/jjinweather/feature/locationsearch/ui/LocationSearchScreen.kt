@@ -23,17 +23,24 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -45,6 +52,7 @@ import androidx.compose.ui.unit.sp
 import com.jin.jjinweather.R
 import com.jin.jjinweather.ui.theme.JJinWeatherTheme
 import com.jin.jjinweather.ui.theme.PointColor
+import kotlinx.coroutines.launch
 
 
 @Composable
@@ -81,11 +89,21 @@ fun LocationSearchScreen(onNavigateToTemperature: () -> Unit) {
 @Composable
 fun LocationSearchBottomSheet() {
     val scaffoldState = rememberBottomSheetScaffoldState()
+    val coroutineScope = rememberCoroutineScope()
+    val focusRequester = remember { FocusRequester() }
+    val focusManager = LocalFocusManager.current
     var keyword by remember { mutableStateOf("") }
+
+    LaunchedEffect(scaffoldState.bottomSheetState.currentValue) {
+        when (scaffoldState.bottomSheetState.currentValue) {
+            SheetValue.Expanded -> focusRequester.requestFocus()
+            SheetValue.PartiallyExpanded, SheetValue.Hidden -> focusManager.clearFocus()
+        }
+    }
 
     BottomSheetScaffold(
         scaffoldState = scaffoldState,
-        sheetPeekHeight = 80.dp,
+        sheetPeekHeight = 120.dp,
         sheetShape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
         sheetDragHandle = null,
         sheetShadowElevation = 30.dp,
@@ -106,7 +124,22 @@ fun LocationSearchBottomSheet() {
                 Spacer(modifier = Modifier.height(12.dp))
 
                 // 검색 박스
-                SearchLocationBox(query = keyword, onQueryChange = { keyword = it })
+                // FIXME : 위치 검색 API 연동 필요
+                SearchLocationBox(
+                    query = keyword,
+                    focusRequester = focusRequester,
+                    onQueryChange = { keyword = it },
+                    onFocusChanged = { isFocused ->
+                        coroutineScope.launch {
+                            if (isFocused) {
+                                scaffoldState.bottomSheetState.expand()
+                            } else {
+                                scaffoldState.bottomSheetState.partialExpand()
+                                focusManager.clearFocus()
+                            }
+                        }
+                    }
+                )
             }
         }
     ) {
@@ -141,7 +174,7 @@ fun LocationSearchBottomSheet() {
                 }
                 Column(modifier = Modifier.padding(start = 4.dp)) {
                     Text(
-                       text = stringResource(R.string.success_current_location),
+                        text = stringResource(R.string.success_current_location),
                         color = Color.White,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
@@ -209,7 +242,9 @@ fun LocationSearchBottomSheet() {
 @Composable
 fun SearchLocationBox(
     query: String,
-    onQueryChange: (String) -> Unit
+    focusRequester: FocusRequester,
+    onQueryChange: (String) -> Unit,
+    onFocusChanged: (Boolean) -> Unit,
 ) {
     Row(
         modifier = Modifier
@@ -231,7 +266,10 @@ fun SearchLocationBox(
             value = query,
             onValueChange = onQueryChange,
             singleLine = true,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .focusRequester(focusRequester)
+                .onFocusChanged { onFocusChanged(it.isFocused) },
             decorationBox = { innerTextField ->
                 if (query.isEmpty()) {
                     Text(
