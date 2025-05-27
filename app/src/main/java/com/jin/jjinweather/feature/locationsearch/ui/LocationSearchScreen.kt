@@ -52,6 +52,7 @@ import androidx.compose.ui.unit.sp
 import com.jin.jjinweather.R
 import com.jin.jjinweather.ui.theme.JJinWeatherTheme
 import com.jin.jjinweather.ui.theme.PointColor
+import com.jin.jjinweather.ui.theme.SearchBoxBackgroundColor
 import kotlinx.coroutines.launch
 
 
@@ -250,7 +251,7 @@ fun SearchLocationBox(
         modifier = Modifier
             .fillMaxWidth()
             .height(48.dp)
-            .background(Color(0xFFF3F8FC), RoundedCornerShape(16.dp))
+            .background(SearchBoxBackgroundColor, RoundedCornerShape(16.dp))
             .padding(horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
