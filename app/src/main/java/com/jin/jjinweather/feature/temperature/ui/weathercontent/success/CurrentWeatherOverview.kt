@@ -7,10 +7,15 @@ import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.NearMe
 import androidx.compose.material3.Icon
@@ -19,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -35,7 +41,8 @@ fun CurrentWeatherOverview(
     currentWeatherIconRes: Int,
     todayMinTemperature: Int,
     todayMaxTemperature: Int,
-    yesterdayTemperature: Int
+    yesterdayTemperature: Int,
+    pagerState: PagerState
 ) {
     val infiniteTransition = rememberInfiniteTransition(label = "rocking")
     val rotation by infiniteTransition.animateFloat(
@@ -93,13 +100,31 @@ fun CurrentWeatherOverview(
             )
         }
 
-        // FIXME : need pager and indicator
-        Icon(
-            imageVector = Icons.Filled.NearMe,
-            contentDescription = "현재위치",
-            tint = Color.White,
-            modifier = Modifier.size(12.dp)
-        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            repeat(pagerState.pageCount) { index ->
+                val isSelected = pagerState.currentPage == index
+                val color = if (isSelected) Color.White else Color.White.copy(alpha = 0.3f)
+                if (index == 0) {
+                    Icon(
+                        imageVector = Icons.Filled.NearMe,
+                        contentDescription = "현재위치",
+                        tint = color,
+                        modifier = Modifier.size(12.dp)
+                    )
+                } else {
+                    Box(
+                        modifier = Modifier
+                            .padding(horizontal = 4.dp)
+                            .size(8.dp)
+                            .clip(CircleShape)
+                            .background(color)
+                    )
+                }
+            }
+        }
     }
 }
 

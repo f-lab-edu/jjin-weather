@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -51,16 +50,18 @@ private fun WeatherContentUI(
         is UiState.Loading -> WeatherLoadingScreen()
         is UiState.Success -> {
             // FIXME : Weather page 마다 weather 정보 필요
-            val weatherPages = listOf<@Composable () -> Unit>(
-                { WeatherSuccessScreen(weather.data, onNavigateToOutfit, onNewLocationPage) },
-                { WeatherSuccessScreen(weather.data, onNavigateToOutfit, onNewLocationPage) },
-            )
-            val pagerState = rememberPagerState { weatherPages.size }
+            val weatherList = listOf(weather.data, weather.data)
+            val pagerState = rememberPagerState { weatherList.size }
             Box(modifier = Modifier.fillMaxSize()) {
                 HorizontalPager(
                     state = pagerState
                 ) { page ->
-                    weatherPages[page]()
+                    WeatherSuccessScreen(
+                        weather = weatherList[page],
+                        pagerState = pagerState,
+                        onNavigateToOutfit = onNavigateToOutfit,
+                        onNewLocationPage = onNewLocationPage,
+                    )
                 }
             }
         }
