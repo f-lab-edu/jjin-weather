@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.pager.PagerState
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -33,7 +32,8 @@ fun WeatherSuccessScreen(
         summary: String,
         forecast: HourlyForecast,
         feelsLikeTemperature: Int,
-    ) -> Unit
+    ) -> Unit,
+    onNavigateToDistrict: () -> Unit
 ) {
     val now = LocalTime.now()
     val isNight =
@@ -50,7 +50,7 @@ fun WeatherSuccessScreen(
                 .padding(horizontal = 18.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            item { TopMenuAction() }
+            item { TopMenuAction(onNavigateToDistrict) }
             item {
                 CurrentWeatherOverview(
                     pageCount = pageCount,

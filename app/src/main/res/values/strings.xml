@@ -103,4 +103,10 @@
     <string name="outfit_max_temperature">최고 온도</string>
     <string name="outfit_min_temperature">최저 온도</string>
     <string name="outfit_feels_like_temperature">체감 온도</string>
+
+    <string name="district_title">위치</string>
+    <string name="district_current_location">현재 위치</string>
+    <string name="district_added_location">추가한 위치</string>
+    <string name="district_search_icon_desc">검색 아이콘</string>
+    <string name="district_search_hint">위치 검색 및 추가</string>
 </resources>

@@ -8,7 +8,10 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionStatus
@@ -29,7 +32,8 @@ fun TemperatureScreen(
         summary: String,
         forecast: HourlyForecast,
         feelsLikeTemperature: Int,
-    ) -> Unit
+    ) -> Unit,
+    onNavigateToDistrict: () -> Unit
 ) {
     val composePermissionState = rememberPermissionState(
         permission = Manifest.permission.ACCESS_COARSE_LOCATION
@@ -57,10 +61,12 @@ fun TemperatureScreen(
                         pageCount = pagerState.pageCount,
                         currentPage = pagerState.currentPage,
                         onNavigateToOutfit = onNavigateToOutfit,
+                        onNavigateToDistrict = onNavigateToDistrict
                     )
                 }
             }
         }
+
         is UiState.Error -> WeatherErrorScreen(state.message)
     }
 }

@@ -95,3 +95,5 @@ val TemperatureGraphBackgroundColor = Color(0x701d1c66)
 val DetailWeatherIconBackgroundColor = Color(0x30FFFFFF)
 
 val TextColor40 = Color(0xFF444444)
+
+val SearchBoxBackgroundColor = Color(0xFFF3F8FC)
